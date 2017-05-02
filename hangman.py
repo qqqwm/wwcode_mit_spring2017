@@ -108,7 +108,7 @@ def hangman(secret_word):
 
 def match_with_gaps(my_word, other_word):
     myword = ''
-    for i in range(0, len(my_word)-1):
+    for i in range(0, len(my_word)):
         if my_word[i] != ' ':
             myword += my_word[i]
     if len(myword) != len(other_word):
@@ -118,10 +118,20 @@ def match_with_gaps(my_word, other_word):
             return False
     return True
 
-
-def show_possible_matches(my_word):
+def blablabla(my_word, letters_guessed, other_word):
+    myword = ''
+    for i in range(0, len(my_word)):
+        if my_word[i] != ' ':
+            myword += my_word[i]
+    for i in range(0, len(myword)):
+        if myword[i] == '_':
+            if other_word[i] in ''.join(letters_guessed):
+                return False
+    return True
+        
+def show_possible_matches(my_word, letters_guessed):
     for word in wordlist:
-        if match_with_gaps(my_word, word) == True:
+        if match_with_gaps(my_word, word) and blablabla(my_word, letters_guessed, word):
             print(word)
 
 
@@ -134,7 +144,7 @@ def hangman_with_hints(secret_word):
     print ('Welcome to the game Hangman!')
     print ('I am thinking of a word that is ', len(secret_word), ' letters long.')
     print ('__________________')
-    #print (secret_word)
+    print (secret_word)
     while guesses_left > 0:
         available_letters = get_available_letters(letters_guessed)
         print ('You have', guesses_left ,'guesses left.')
@@ -142,7 +152,7 @@ def hangman_with_hints(secret_word):
         letters_guessed += [str.lower(input('Please guess a letter: '))]
         if letters_guessed[len(letters_guessed) - 1] == '*':
             print ('Possible word matches are: ')
-            show_possible_matches(get_guessed_word(secret_word, letters_guessed))
+            show_possible_matches(get_guessed_word(secret_word, letters_guessed), letters_guessed)
         elif len(letters_guessed[len(letters_guessed) - 1]) != 1:
             print('Enter only one letter.')
         elif letters_guessed[len(letters_guessed) - 1] in letters_guessed[0:-1]:
