@@ -13,7 +13,7 @@ a. If the user has one or more warning left, the user should lose o
 warning. Tell the user the number of remaining warnings. 
 b. If the user has no warnings, they should lose one guess. 
 4. If the user inputs a letter that hasn’t been guessed before and the letter
-is in the secret word, the user loses ​no​ guesses. 
+is in the secret word, the user loses no guesses. 
 ...
 """
 # Name: Sasha Panova
@@ -29,7 +29,7 @@ WORDLIST_FILENAME = "words.txt"
 
 def load_words():
     """
-    Loads wordlist from file and returnes it.
+    Loads wordlist from file and returns it.
     """
     print("Loading word list from file...")
     # in_file: file
@@ -44,7 +44,7 @@ def load_words():
 
 def choose_word(wordlist):
     """
-    Chooses random word from the wordlist and returnes it.
+    Chooses random word from the wordlist and returns it.
     """
     return random.choice(wordlist)
 
@@ -54,10 +54,10 @@ WORDLIST = load_words()
 
 def get_guessed_word(secret_word, letters_guessed):
     """
-    This function takes in two parameters ­ a string, ​secret_word​, 
-    and a list of letters, ​letters_guessed​. 
+    This function takes in two parameters  a string, secret_word, 
+    and a list of letters, letters_guessed. 
     This function returns a string that is comprised of letters and underscores,
-    based on what letters in letters_guessed​ are in ​secret_word​. 
+    based on what letters in letters_guessed are in secret_word. 
     """
     return_string = ''
     for i in range (0, len(secret_word)):
@@ -74,9 +74,9 @@ def get_guessed_word(secret_word, letters_guessed):
 
 def is_word_guessed(secret_word, letters_guessed):
     """
-    This funtion takes in two parameters ­ a string, ​secret_word​, and a list
-    of letters (strings), ​letters_guessed.​ This function returns a boolean ­
-    ​True​ if ​secret_word​ has been guessed and False otherwise.
+    This funtion takes in two parameters a string, secret_word, and a list
+    of letters (strings), letters_guessed. This function returns a boolean 
+    True if secret_word has been guessed and False otherwise.
     """
     for i in range (0, len(secret_word)):
         if secret_word[i] != get_guessed_word(secret_word, letters_guessed)[i]:
@@ -86,7 +86,7 @@ def is_word_guessed(secret_word, letters_guessed):
 
 def get_available_letters(letters_guessed):
     """
-    Chooses from all_letters letters that user haven't guessed and returnes it.
+    Chooses from all_letters letters that user haven't guessed and returns it.
     """
     all_letters = 'abcdefghijklmnopqrstuvwxyz'
     available_letters = ''
@@ -94,17 +94,29 @@ def get_available_letters(letters_guessed):
         if i not in letters_guessed:
             available_letters += i
     return available_letters
-            
+
+
+def reduce_warnings(warnings_left, guesses_left):
+    """
+    Reduces amount of warnings_left, if there are some warnings left,
+    and anount of guesses_left otherwise.
+    """
+    if warnings_left > 0:
+        warnings_left -= 1
+    else:
+        guesses_left -= 1
+    return (warnings_left, guesses_left)
+        
 
 def hangman(secret_word):
     """
-    Implements the game with hints.
+    Implements the game without hints.
     """
     letters_guessed = []
     unique_letters = 0
     guesses_left = 6
     warnings_left = 3
-    winning = False
+    win = False
     print ('Welcome to the game Hangman!')
     print ('I am thinking of a word that is ', len(secret_word), ' letters long.')
     print ('__________________')
@@ -117,17 +129,11 @@ def hangman(secret_word):
         if len(letters_guessed[len(letters_guessed) - 1]) != 1:
             print('Enter only one letter.')
         elif letters_guessed[len(letters_guessed) - 1] in letters_guessed[0:-1]:
-            if warnings_left > 0:
-                warnings_left -= 1
-            else:
-                guesses_left -= 1
+            warnings_left, guesses_left = reduce_warnings(warnings_left, guesses_left)
             print("Oops! You've already guessed that letter. You have", \
                   warnings_left,'warnings left :')
         elif letters_guessed[len(letters_guessed) - 1] not in available_letters:
-            if warnings_left > 0:
-                warnings_left -= 1
-            else:
-                guesses_left -= 1
+            warnings_left, guesses_left = reduce_warnings(warnings_left, guesses_left)
             print('Oops! That is not a valid letter. You have', warnings_left, \
                   ' warnings left:', get_guessed_word(secret_word, letters_guessed))
         elif letters_guessed[len(letters_guessed) - 1] in secret_word:
@@ -144,17 +150,17 @@ def hangman(secret_word):
             total_score = guesses_left*unique_letters
             print('\nCongratulations, you won! Your total score for this game is:', \
                   total_score)
-            winning = True
+            win = True
             break
         print(' \n__________________ \n ')
-    if winning == False:
+    if win == False:
         print('Sorry, you ran out of guesses. The word was', secret_word, '.')
 
 
 def match_with_gaps(my_word, other_word):
     """
     returns False if other_word can't match with my_word,
-    otherwise returnes True.
+    otherwise returns True.
     """
     myword = ''
     for i in range(0, len(my_word)):
@@ -198,31 +204,29 @@ def hangman_with_hints(secret_word):
     unique_letters = 0
     guesses_left = 6
     warnings_left = 3
-    winning = False
+    win = False
     print ('Welcome to the game Hangman!')
     print ('I am thinking of a word that is ', len(secret_word), ' letters long.')
     print ('__________________')
-    print (secret_word)
+    #print (secret_word)
     while guesses_left > 0:
         available_letters = get_available_letters(letters_guessed)
         print ('You have', guesses_left ,'guesses left.')
         print ('Available letters:', available_letters)
         letters_guessed += [str.lower(input('Please guess a letter: '))]
-        if letters_guessed[len(letters_guessed) - 1] == '*':
+        letter = letters_guessed[len(letters_guessed) - 1]
+        if letter == '*':
             print ('Possible word matches are: ')
             show_possible_matches(get_guessed_word(secret_word, letters_guessed),
             letters_guessed)
-        elif len(letters_guessed[len(letters_guessed) - 1]) != 1:
+        elif len(letter) != 1:
             print('Enter only one letter.')
-        elif letters_guessed[len(letters_guessed) - 1] in letters_guessed[0:-1]:
+        elif letter in letters_guessed[0:-1]:
+            warnings_left, guesses_left = reduce_warnings(warnings_left, guesses_left)
             print("Oops! You've already guessed that letter. You have", \
             warnings_left,'warnings left :')
-        elif letters_guessed[len(letters_guessed) - 1] not in available_letters:
-            if warnings_left > 0:
-                warnings_left -= 1
-            else:
-                guesses_left -= 1
-                
+        elif letter not in available_letters:
+            warnings_left, guesses_left = reduce_warnings(warnings_left, guesses_left)  
             print('Oops! That is not a valid letter. You have', warnings_left, \
             ' warnings left:', get_guessed_word(secret_word, letters_guessed))
         elif letters_guessed[len(letters_guessed) - 1] in secret_word:
@@ -239,10 +243,10 @@ def hangman_with_hints(secret_word):
             total_score = guesses_left*unique_letters
             print('\nCongratulations, you won! Your total score for this game is:', \
                   total_score)
-            winning = True
+            win = True
             break
         print(' \n__________________ \n ')
-    if winning == False:
+    if win == False:
         print('Sorry, you ran out of guesses. The word was', secret_word, '.')
 
 
