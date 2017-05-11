@@ -20,8 +20,6 @@ is in the secret word, the user loses no guesses. 
 
 
 import random
-import pylint
-#import string
 
 
 WORDLIST_FILENAME = "words.txt"
@@ -220,6 +218,7 @@ def hangman_with_hints(secret_word):
             show_possible_matches(get_guessed_word(secret_word, letters_guessed),
             letters_guessed)
         elif len(letter) != 1:
+            letters_guessed = letters_guessed[0:len(letters_guessed) - 1]
             print('Enter only one letter.')
         elif letter in letters_guessed[0:-1]:
             warnings_left, guesses_left = reduce_warnings(warnings_left, guesses_left)
