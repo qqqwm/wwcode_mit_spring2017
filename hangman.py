@@ -125,6 +125,7 @@ def hangman(secret_word):
         print ('Available letters:', available_letters)
         letters_guessed += [str.lower(input('Please guess a letter: '))]
         if len(letters_guessed[len(letters_guessed) - 1]) != 1:
+            letters_guessed = letters_guessed[0:len(letters_guessed) - 1]
             print('Enter only one letter.')
         elif letters_guessed[len(letters_guessed) - 1] in letters_guessed[0:-1]:
             warnings_left, guesses_left = reduce_warnings(warnings_left, guesses_left)
