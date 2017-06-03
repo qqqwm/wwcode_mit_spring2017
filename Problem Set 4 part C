@@ -113,7 +113,6 @@ class SubMessage(object):
         Returns: an encrypted version of the message text, based 
         on the dictionary
         '''
-        #print(transpose_dict)
         encrypted_message = ''
         message = SubMessage.get_message_text(self)
         for letter in message:
@@ -121,7 +120,6 @@ class SubMessage(object):
                 encrypted_message += transpose_dict[letter]
             else:
                 encrypted_message += letter
-        #print(encrypted_message)
         return encrypted_message
                 
         
@@ -163,10 +161,8 @@ class EncryptedSubMessage(SubMessage):
         available_permutations = get_permutations('aeiou')
         for permutation in available_permutations:
             transpose_dict = SubMessage.build_transpose_dict(self, available_permutations)
-            #inverse_dict = dict (zip(transpose_dict.values(),transpose_dict.keys()))
             counter = 0
             message = SubMessage.apply_transpose(self, transpose_dict).split(' ')
-            #print(message)
             for word in message:
                 if is_word(self.valid_words, word):
                     counter += 1
