@@ -120,7 +120,7 @@ class Message(object):
         '''
         encryption_dict = Message.build_shift_dict(self, shift)
         message_text_encrypted = ''
-        for symbol in self.message_text:
+        for symbol in Message.get_message_text(self):
             if symbol in encryption_dict:
                 message_text_encrypted += encryption_dict[symbol]
             else:
