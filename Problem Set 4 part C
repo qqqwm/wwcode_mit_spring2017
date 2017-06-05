@@ -96,7 +96,7 @@ class SubMessage(object):
         Returns: a dictionary mapping a letter (string) to 
                  another letter (string). 
         '''
-        vowels_permutation = permutation
+        
         transpose_dict = {i : i for i in CONSONANTS_LOWER}
         transpose_dict.update({i : i for i in CONSONANTS_UPPER})
         transpose_dict.update({VOWELS_LOWER[i] : vowels_permutation[i].lower() \
@@ -160,7 +160,7 @@ class EncryptedSubMessage(SubMessage):
         best_message = 0
         available_permutations = get_permutations('aeiou')
         for permutation in available_permutations:
-            transpose_dict = SubMessage.build_transpose_dict(self, available_permutations)
+            transpose_dict = SubMessage.build_transpose_dict(self, permutation)
             counter = 0
             message = SubMessage.apply_transpose(self, transpose_dict).split(' ')
             for word in message:
@@ -169,7 +169,7 @@ class EncryptedSubMessage(SubMessage):
             if counter >= max_counter:
                 max_counter = counter
                 best_message = message
-        return ' '.join(message)
+        return ' '.join(best_message)
    
 
 if __name__ == '__main__':
@@ -196,11 +196,11 @@ if __name__ == '__main__':
     print("Decrypted message:      ", enc_message.decrypt_message())
 
     message = SubMessage("Wanting to be someone else is a waste of the person you are.")
-    permutation = "ieauo"
+    permutation = "ioeua"
     enc_dict = message.build_transpose_dict(permutation)
     print("\nOriginal message:       ", message.get_message_text())
     print("Permutation:            ", permutation)
-    print("Expected encryption:    ", 'Wintang tu be sumeune else as i wiste uf the persun yuo ire.')
+    print("Expected encryption:    ", 'Winteng tu bo sumouno olso es i wisto uf tho porsun yua iro.')
     print("Actual encryption:      ", message.apply_transpose(enc_dict))
     enc_message = EncryptedSubMessage(message.apply_transpose(enc_dict))
     print("Decrypted message:      ", enc_message.decrypt_message())
