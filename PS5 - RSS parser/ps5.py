@@ -206,7 +206,7 @@ def read_trigger_config(filename):
         line = line.rstrip()
         if not (len(line) == 0 or line.startswith('//')):
             lines.append(line)
-    print(lines)
+    #print(lines)
     triggerlist = []
     triggerdict = {}
     triggers ={"PHRASE" : PhraseTrigger, "TITLE" : TitleTrigger,
@@ -229,8 +229,6 @@ def read_trigger_config(filename):
         elif line[0] == "ADD":
             for i in line[1:]:
                 triggerlist.append(triggerdict[i])
-                print(triggerdict[i])
-            print(triggerlist)
     return triggerlist
 
 
