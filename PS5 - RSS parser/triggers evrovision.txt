@@ -5,4 +5,6 @@ t3,DESCRIPTION,sobral
 t4,AFTER,3 May 2017 17:00:10
 t5,AND,t2,t3
 t6,AND,t1,t4
+t8,AND,t5,t1
+t9,AND,t4,t2
 ADD,t5,t6
