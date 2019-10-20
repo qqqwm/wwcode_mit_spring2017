@@ -33,12 +33,13 @@ def process(url):
         pubdate = translate_html(entry.published)
 
         try:
-            pubdate = datetime.strptime(pubdate, "%a, %d %b %Y %H:%M:%S %Z")
+            pubdate = datetime.strptime(pubdate, "%b %Y %H:%M:%S")
+
             pubdate.replace(tzinfo=pytz.timezone("GMT"))
-          #  pubdate = pubdate.astimezone(pytz.timezone('EST'))
-          #  pubdate.replace(tzinfo=None)
+            pubdate = pubdate.astimezone(pytz.timezone('EST'))
+            pubdate.replace(tzinfo=None)
         except ValueError:
-            pubdate = datetime.strptime(pubdate, "%a, %d %b %Y %H:%M:%S %z")
+            pubdate = datetime.strptime(pubdate, "%b %Y %H:%M:%S")
 
         newsStory = NewsStory(guid, title, description, link, pubdate)
         ret.append(newsStory)
