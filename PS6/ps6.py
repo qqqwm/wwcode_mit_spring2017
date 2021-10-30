@@ -1,4 +1,5 @@
 # Name: Oleksandra Panova
+# Name: George Cooper (c) 2021
 
 import feedparser
 import string
